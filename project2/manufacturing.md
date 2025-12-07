@@ -13,7 +13,7 @@ This section corresponds to **Plan and Execute the Manufacturing** in the assign
 
 Explain how you designed the robot for fabrication, for example:
 
-- The CAD tool used (e.g., LibreCAD, Inkscape, Fusion 360, etc.)  
+- The CAD tool used (LibreCAD, Inkscape, Fusion, etc.)  
 - The **DXF file** with separate layers for:
   - Hinges  
   - Cuts  
@@ -26,14 +26,14 @@ Example files (update these paths to match your repo):
 
 ## Multilayer Manufacturing
 
-Describe the steps you followed:
+Describe the steps:
 
 1. Extract joint lines and compute the multi-layer manufacturing stackup.  
 2. Laser cut each layer.  
 3. Laminate the layers together.  
 4. Fold the structure into its 3D shape.
 
-Add photos or diagrams such as:
+You can add photos like:
 
 ```markdown
 ![Laser-cut layers](./media/laser_cut_layers.png)
