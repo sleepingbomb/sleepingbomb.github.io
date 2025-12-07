@@ -1,37 +1,44 @@
 ---
 layout: default
-title: "Project Assignment 1"
+title: "Project 1 – Proposal"
+nav_order: 2
 ---
 
-# Project Assignment 1
+# Project 1 – Proposal
 
-This page summarizes **Project Assignment 1** from the Foldable Robotics course.
+This project documents my **initial proposal** for the final foldable robot in the Foldable Robotics course.
 
-## 🔍 Objective
+---
 
-Briefly describe the goal of Project 1, for example:
+## 🎯 Objective of Project 1
 
-> Model and simulate a simple jumping or foldable mechanism using MuJoCo, analyze its behavior, and connect simulation results to expected physical behavior.
+- Define the **robot concept** (e.g., grasshopper-inspired four-bar mechanism).
+- Summarize the **intended kinematics and dynamics**.
+- Outline the planned **simulation and optimization strategy** in MuJoCo.
+- Sketch how the robot would ultimately be **fabricated and tested**.
 
-## 🧠 Approach
+You can view the original proposal PDF here:
 
-- Designed the mechanism geometry and parameters.
-- Created a MuJoCo model (`.xml`) to capture the kinematics and dynamics.
-- Ran simulations in a Jupyter notebook to analyze:
-  - Motion
-  - Forces / energy
-  - Performance metrics (e.g., jump height, displacement, etc.).
+- `link-to-your-proposal.pdf` (replace with real path in your repo)
 
-## 📊 Results
+---
 
-Describe your key plots and findings, for example:
+## 🧠 Key Ideas from the Proposal
 
-- Variation of performance with some design parameter.
-- Energy or height curves.
-- Stability or sensitivity to parameter changes.
+- Overall robot concept and motivation.
+- What degree(s) of freedom the robot has.
+- How the robot is expected to move (e.g., hopping, folding, extending).
+- Early ideas for:
+  - **Design parameters** to vary (e.g., stiffness, link length)
+  - **Performance metrics** (e.g., jump height, speed, distance)
 
-You can embed images like this (after putting them in `project1/media/`):
+---
 
-```markdown
-![Simulation snapshot](./media/sim_snapshot.png)
-![Parameter sweep plot](./media/parameter_sweep.png)
+## 🔄 Connection to Project 2
+
+Project 1 sets the foundation for **Project 2**, where the proposal is turned into:
+
+- A **full MuJoCo model**  
+- A **parameter sweep and optimization**  
+- A **fabricated laminated robot**  
+- A **sim-to-real experimental comparison**
