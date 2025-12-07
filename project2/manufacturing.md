@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Manufacturing"
-parent: "Project 2 – Final Robot"
+title: Manufacturing Plan & Execution
+parent: Project 2 – Final Robot
 nav_order: 3
 ---
 
