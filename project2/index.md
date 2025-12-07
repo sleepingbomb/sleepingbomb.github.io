@@ -7,9 +7,8 @@ has_children: true
 
 # Project 2 – Final Robot
 
-This project documents the final robot I built for the Foldable Robotics course:  
-a foldable, grasshopper-inspired robot based on a four-bar mechanism, modeled in MuJoCo and built as a laminated prototype.  
-The goal is to connect **system modeling**, **design optimization**, **manufacturing**, and **experimental validation** into one coherent story.
+This project documents my final robot for the Foldable Robotics course:
+a foldable, grasshopper-inspired robot based on a four-bar mechanism, modeled in MuJoCo and built as a laminated prototype.
 
 The structure of this section follows the assignment:
 
@@ -40,7 +39,7 @@ The structure of this section follows the assignment:
   A MuJoCo model that captures the link lengths, masses, hinge stiffness, and actuator behavior used in the real robot.
 
 - **Design Optimization:**  
-  Design parameters (e.g., hinge stiffness, leg length, mass distribution) are varied in simulation to improve performance  
+  Design parameters (e.g., hinge stiffness, leg length, mass distribution) are varied in simulation to improve performance
   metrics such as **jump height**, **distance traveled**, and **energy efficiency**.
 
 - **Manufacturing Plan & Execution:**  
@@ -62,3 +61,5 @@ The structure of this section follows the assignment:
   - The best robot configuration and its performance
 
 Each of the links above takes you to a dedicated page with figures, notebooks, CAD files, and videos so that someone else can understand, reproduce, or extend this robot design.
+
+
