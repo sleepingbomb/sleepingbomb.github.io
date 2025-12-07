@@ -6,9 +6,10 @@ remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme
 
+# If your site is at https://sleepingbomb.github.io/
+# you don't need url/baseurl for a personal site,
+# so we leave them out.
+
+logo: "/assets/logo.png"   # optional, only if you actually add this file
 search_enabled: true
 
-# Optional: later you can enable custom CSS like this:
- just_the_docs:
-   custom_css:
-     - "/assets/css/custom.css"
