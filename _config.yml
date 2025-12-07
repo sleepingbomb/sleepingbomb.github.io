@@ -23,7 +23,7 @@ just_the_docs:
     docs:
       name: "Docs"
   # If you later want custom CSS, uncomment this and create the file:
-  # custom_css:
-  #   - /assets/css/custom.css
+   custom_css:
+     - /assets/css/custom.css
 
 
