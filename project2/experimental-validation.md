@@ -1,11 +1,3 @@
-
----
-
-## 9️⃣ Experimental Validation Page
-
-`project2/experimental-validation.md`
-
-```markdown
 ---
 layout: default
 title: "Experimental Validation"
