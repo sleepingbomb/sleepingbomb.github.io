@@ -1,27 +1,26 @@
 ---
 layout: default
-title: Design Optimization
-parent: Project 2 – Final Robot
+title: "Design Optimization"
+parent: "Project 2 – Final Robot"
 nav_order: 2
 has_children: true
 ---
-
-
 
 # Design Optimization
 
 This section corresponds to **Part 2: Optimize Your Design**.
 
-## 🎯 Goal
+## Goal
 
-Select one or more **design parameters** and study how they affect performance.  
+Select one or more **design parameters** and study how they affect performance.
+
 Example parameters:
 
 - Hinge stiffness
 - Leg length or mounting position
 - Mass distribution
 
-## 📏 Performance Metric
+## Performance Metric
 
 Define the metric you used, e.g.:
 
@@ -31,11 +30,10 @@ Define the metric you used, e.g.:
 
 Explain **why you chose this metric** and how it relates to real experiments.
 
-## 🧪 Parameter Sweep
+## Parameter Sweep
 
 - Regenerate the MuJoCo model (XML) programmatically for each parameter value.
 - Run simulations and collect metrics.
 - Plot **performance vs. design variable**.
 
-```markdown
 ![Performance vs stiffness](./media/performance_vs_stiffness.png)
