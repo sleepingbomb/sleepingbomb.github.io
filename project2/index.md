@@ -13,7 +13,8 @@ a foldable, grasshopper-inspired robot based on a four-bar mechanism, modeled in
 The structure of this section follows the assignment:
 
 1. [System Model (MuJoCo)](system-model.html) – final dynamic model, geometry, and joint definitions.
-2. [Design Optimization](optimization.html) – parameter sweeps and optimization of key design variables.
+2. [Design Optimization](./optimization.html)
+   - [Parameter Identification](./parameter-identification.html)
 3. [Manufacturing Plan & Execution](manufacturing.html) – materials, fabrication steps, and assembly process.
 4. [Experimental Validation](experimental-validation.html) – comparing simulation predictions against the real robot.
 5. [Report & Video](report-and-video.html) – final written report and presentation video.
