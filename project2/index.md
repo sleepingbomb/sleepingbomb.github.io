@@ -20,16 +20,6 @@ The structure of this section follows the assignment:
 
 ---
 
-## Table of contents
-
-- [System Model (MuJoCo)](system-model.html)
-- [Design Optimization](optimization.html)
-- [Manufacturing Plan & Execution](manufacturing.html)
-- [Experimental Validation](experimental-validation.html)
-- [Report & Video](report-and-video.html)
-
----
-
 ## Quick overview
 
 - **Concept:**  
