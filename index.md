@@ -1,27 +1,30 @@
 ---
 layout: default
 title: "Home"
+nav_order: 1
 ---
 
 # Foldable Robotics – Project Portfolio
 
-Welcome! This site documents my work for the **Foldable Robotics** course, including modeling, simulation, optimization, and fabrication of foldable robots.
+Welcome! This site documents my work for the **Foldable Robotics** course, including:
 
-## 📌 Contents
+- **Project 1 – Proposal**  
+- **Project 2 – Final Robot** (design, optimization, manufacturing, and experimental validation based on the assignment brief)
 
-- [Project Assignment 1](./project1/)  
-  Initial modeling and simulation assignment.
-
-- [Project Assignment 2 – Final Robot](./project2/)  
-  Design, optimization, manufacturing, and experimental validation of my final robot.
+Use the navigation on the left to explore each project.
 
 ---
 
-## 🧩 Tools & Technologies
+## 🔗 Quick Links
+
+- [Project 1 – Proposal](./project1/)
+- [Project 2 – Final Robot](./project2/)
+
+---
+
+## 🧰 Tools & Technologies
 
 - **MuJoCo** for dynamic simulation  
-- **Python + Jupyter Notebooks** for analysis and optimization  
+- **Python + Jupyter Notebooks** for optimization and analysis  
 - **Laser-cut laminated mechanisms** for hardware  
-- **ESP32 / servos** for actuation and control
-
-Use the navigation links above to explore each project.
+- **ESP32 + servos** for control and gait execution  
