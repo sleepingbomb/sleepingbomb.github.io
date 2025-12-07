@@ -22,3 +22,16 @@ just_the_docs:
   # You can add a custom CSS file if you want:
   # custom_css:
   #   - /assets/css/custom.css
+```css
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+}
