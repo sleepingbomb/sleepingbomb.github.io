@@ -9,33 +9,38 @@ nav_order: 1
 
 This section corresponds to **Part 1: Define the System Model** of the assignment.
 
-## 🎯 Goal
+## Goal
 
 Create a **final dynamic MuJoCo model** that adapts:
 
-- The ideal kinematics from the proposal (Project 1)
-- To the **final geometry**, **material properties**, and **actuator behavior**
+- The ideal kinematics from the proposal (Project 1)  
+- To the **final geometry**, **material properties**, and **actuator behavior** of the robot  
 
-## 📐 Model Details
+## Model Details
 
-Describe:
+Describe (and link to) your actual model files here:
 
-- **Geometry**: link lengths, four-bar layout, body dimensions.
-- **Joints & Compliance**:
-  - Hinge stiffness
-  - Beam/flexure stiffness
-- **Actuators / Motors**:
-  - Servo selection and torque/speed
-  - How actuation is modeled in MuJoCo (e.g., position control, torque control)
+- **Geometry**  
+  - Link lengths, four-bar layout, body dimensions  
+  - Any assumptions or simplifications (2D vs 3D, symmetry, etc.)
+
+- **Joints & Compliance**  
+  - Hinge stiffness values  
+  - Beam/flexure stiffness  
+  - Where compliance is modeled in MuJoCo (joint stiffness, tendons, etc.)
+
+- **Actuators / Motors**  
+  - Servo model and key specs (torque, speed, gear ratio)  
+  - How actuation is modeled (position control, torque control, motor limits)
 
 You might link to files like:
 
-- MuJoCo XML: `project2/models/final_robot.xml`
-- Jupyter notebook: `project2/notebooks/system_model.ipynb`
+- `project2/models/final_robot.xml`  
+- `project2/notebooks/system_model.ipynb`  
 
-## 🎥 Visuals
+## Visuals
 
-Add images or screenshots:
+Add images or screenshots to make the model easier to understand, for example:
 
 ```markdown
 ![MuJoCo model of the robot](./media/mujoco_model.png)
