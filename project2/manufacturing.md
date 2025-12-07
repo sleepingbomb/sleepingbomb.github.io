@@ -19,7 +19,7 @@ Explain how you designed the robot for fabrication, for example:
   - Cuts  
   - Additional geometry (mounts, servo cutouts, etc.)  
 
-Example files (update these paths to match your repo):
+Example files (update these paths to match your repo):-
 
 - `project2/cad/final_robot.dxf`  
 - `project2/cad/layered_cuts/`  
