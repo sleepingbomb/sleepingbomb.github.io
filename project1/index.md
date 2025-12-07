@@ -23,10 +23,9 @@ This project documents my **initial proposal** for the final foldable robot in t
 
 You can view the original proposal PDF here:
 
-- `[Download the Project 1 Proposal](./PATH/TO/YOUR_PROPOSAL.pdf)`
+- `project1proposal.pdf`
 
-> Replace `PATH/TO/YOUR_PROPOSAL.pdf` with the actual relative path to your PDF inside this repo  
-> (for example: `./proposal/project1_proposal.pdf` or `./project1_proposal.pdf`).
+
 
 ---
 
