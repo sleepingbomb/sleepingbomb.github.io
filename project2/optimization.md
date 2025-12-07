@@ -1,11 +1,5 @@
 
----
 
-## 7️⃣ Optimization Page (Part 2)
-
-`project2/optimization.md`
-
-```markdown
 ---
 layout: default
 title: "Design Optimization"
