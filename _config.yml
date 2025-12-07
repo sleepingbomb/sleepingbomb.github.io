@@ -9,6 +9,6 @@ plugins:
 search_enabled: true
 
 # Optional: later you can enable custom CSS like this:
-# just_the_docs:
-#   custom_css:
-#     - "/assets/css/custom.css"
+ just_the_docs:
+   custom_css:
+     - "/assets/css/custom.css"
