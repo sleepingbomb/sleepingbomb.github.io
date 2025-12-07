@@ -1,7 +1,8 @@
+
 ---
 layout: default
-title: Manufacturing Plan & Execution
-parent: Project 2 – Final Robot
+title: "Manufacturing"
+parent: "Project 2 – Final Robot"
 nav_order: 3
 ---
 
@@ -206,3 +207,5 @@ Throughout the process, I iterated between:
 - [Design Optimization](optimization.html) – explains how the chosen dimensions and hinge stiffness were optimized.
 - [Experimental Validation](experimental-validation.html) – shows how the manufactured robot performs compared to the model.
 - [Report & Video](report-and-video.html) – final summary and video demonstration of the robot in action.
+
+[Watch the final presentation video](https://YOUR-VIDEO-LINK-HERE)
