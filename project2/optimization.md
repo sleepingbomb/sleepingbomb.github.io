@@ -1,11 +1,11 @@
 
-
 ---
 layout: default
-title: "Design Optimization"
+title: "optimization"
 parent: "Project 2 – Final Robot"
 nav_order: 2
 ---
+
 
 # Design Optimization
 
