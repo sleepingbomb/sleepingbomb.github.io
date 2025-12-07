@@ -10,35 +10,42 @@ This project documents my **initial proposal** for the final foldable robot in t
 
 ---
 
-## 🎯 Objective of Project 1
+## Objective of Project 1
 
-- Define the **robot concept** (e.g., grasshopper-inspired four-bar mechanism).
-- Summarize the **intended kinematics and dynamics**.
-- Outline the planned **simulation and optimization strategy** in MuJoCo.
-- Sketch how the robot would ultimately be **fabricated and tested**.
+- Define the **robot concept** (e.g., grasshopper-inspired four-bar mechanism).  
+- Summarize the **intended kinematics and dynamics**.  
+- Outline the planned **simulation and optimization strategy** in MuJoCo.  
+- Sketch how the robot would ultimately be **fabricated and tested**.  
+
+---
+
+## Proposal Document
 
 You can view the original proposal PDF here:
 
-- `link-to-your-proposal.pdf` (replace with real path in your repo)
+- `[Download the Project 1 Proposal](./PATH/TO/YOUR_PROPOSAL.pdf)`
+
+> Replace `PATH/TO/YOUR_PROPOSAL.pdf` with the actual relative path to your PDF inside this repo  
+> (for example: `./proposal/project1_proposal.pdf` or `./project1_proposal.pdf`).
 
 ---
 
-## 🧠 Key Ideas from the Proposal
+## Key Ideas from the Proposal
 
-- Overall robot concept and motivation.
-- What degree(s) of freedom the robot has.
-- How the robot is expected to move (e.g., hopping, folding, extending).
+- Overall robot concept and motivation.  
+- What degree(s) of freedom the robot has.  
+- How the robot is expected to move (e.g., hopping, folding, extending).  
 - Early ideas for:
-  - **Design parameters** to vary (e.g., stiffness, link length)
-  - **Performance metrics** (e.g., jump height, speed, distance)
+  - **Design parameters** to vary (e.g., stiffness, link length)  
+  - **Performance metrics** (e.g., jump height, speed, distance)  
 
 ---
 
-## 🔄 Connection to Project 2
+## Connection to Project 2
 
 Project 1 sets the foundation for **Project 2**, where the proposal is turned into:
 
 - A **full MuJoCo model**  
 - A **parameter sweep and optimization**  
 - A **fabricated laminated robot**  
-- A **sim-to-real experimental comparison**
+- A **sim-to-real experimental comparison**  
