@@ -10,6 +10,6 @@ plugins:
 # you don't need url/baseurl for a personal site,
 # so we leave them out.
 
-logo: "/assets/logo.png"   # optional, only if you actually add this file
+#logo: "/assets/logo.png"   # optional, only if you actually add this file
 search_enabled: true
 
