@@ -12,12 +12,13 @@ a foldable, grasshopper-inspired robot based on a four-bar mechanism, modeled in
 
 The structure of this section follows the assignment:
 
-1. [System Model (MuJoCo)](./system-model.html)
-2. [Design Optimization](./optimization.html)
+1. [System Model (MuJoCo)](./system-model/)
+2. [Design Optimization](./optimization/)
    - [Parameter Identification](./parameter-identification.html)
-3. [Manufacturing Plan & Execution](./manufacturing.html)
-4. [Experimental Validation](./experimental-validation.html)
-5. [Report & Video](./report-and-video.html)
+3. [Manufacturing Plan & Execution](./manufacturing/)
+4. [Experimental Validation](./experimental-validation/)
+5. [Report & Video](./report-and-video/)
+
 ---
 
 ## Quick overview
