@@ -1,37 +1,14 @@
 title: "Foldable Robotics Portfolio"
 description: "Project 1 proposal and Project 2 final robot for Foldable Robotics."
+
 remote_theme: just-the-docs/just-the-docs
 
 plugins:
   - jekyll-remote-theme
 
-# Base URL: if your site is at https://username.github.io/repo-name/
-# uncomment and set these:
-# url: "https://your-github-username.github.io"
-# baseurl: "/your-repo-name"
-
-# Just the Docs options
-logo: "/assets/logo.png"   # optional, if you add one
 search_enabled: true
 
-# Optional: custom CSS
-just_the_docs:
-  collections:
-    docs:
-      name: "Docs"
-  # You can add a custom CSS file if you want:
-  # custom_css:
-  - /assets/css/custom.css
-```css
-body {
-  max-width: 960px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 1rem auto;
-}
+# Optional: later you can enable custom CSS like this:
+# just_the_docs:
+#   custom_css:
+#     - "/assets/css/custom.css"
