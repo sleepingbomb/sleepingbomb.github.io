@@ -1,29 +1,13 @@
-title: "Foldable Robotics Portfolio"
+title: "Foldable Robotics – Project Portfolio"
 description: "Project 1 proposal and Project 2 final robot for Foldable Robotics."
 
-# This is a user site: https://sleepingbomb.github.io
-url: "https://sleepingbomb.github.io"
-baseurl: ""   # important: empty for username.github.io repos
-
-# Use Just the Docs as a remote theme
 remote_theme: just-the-docs/just-the-docs
 
 plugins:
   - jekyll-remote-theme
 
-# Optional logo (only works if you actually add this file)
-logo: "/assets/logo.png"
+# For a user site like sleepingbomb.github.io:
+url: "https://sleepingbomb.github.io"
+baseurl: ""
 
-# Enable built-in search
 search_enabled: true
-
-# Just the Docs options (you don't *have* to use collections yet)
-just_the_docs:
-  collections:
-    docs:
-      name: "Docs"
-  # If you later want custom CSS, uncomment this and create the file:
-   custom_css:
-     - /assets/css/custom.css
-
-
