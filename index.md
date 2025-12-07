@@ -6,7 +6,7 @@ nav_order: 1
 
 # Foldable Robotics – Project Portfolio
 
-Welcome! This site documents my work for the **Foldable Robotics** course, including:
+Welcome! This site documents our work for the **Foldable Robotics** course, including:
 
 - **Project 1 – Proposal**
 - **Project 2 – Final Robot** (design, optimization, manufacturing, and experimental validation based on the assignment brief)
@@ -21,6 +21,11 @@ Use the navigation on the left to explore each project.
 - [Project 2 – Final Robot](./project2/)
 
 ---
+## Team 12
+
+- Abhijit Sinha
+- Shivakumar Sridhar
+- Anusha Chatterjee
 
 ## Tools & Technologies
 
