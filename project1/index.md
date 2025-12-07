@@ -23,7 +23,8 @@ This project documents my **initial proposal** for the final foldable robot in t
 
 You can view the original proposal PDF here:
 
-- `project1proposal.pdf`
+- [Project 1 Proposal](./project1proposal.pdf)
+
 
 
 
