@@ -9,4 +9,5 @@ nav_order: 3
 
 ---
 
-1. [manufacturing Workflow](./anushafoldable.pdf)
+1. [manufacturing Workflow](./manufacturing.pdf)
+2. [DXF Files](./output.zip) 
