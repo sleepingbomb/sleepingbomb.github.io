@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Experimental Validation."
+title: "Experimental Validation"
 parent: "Design Optimization"
 nav_order: 2
 ---
