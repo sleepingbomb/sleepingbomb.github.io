@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Optimization | Project 2 — Foldable Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050508;
+      --bg-primary: #0a0b10;
+      --bg-secondary: #0f1118;
+      --bg-card: rgba(15, 17, 24, 0.6);
+      --bg-glass: rgba(255, 255, 255, 0.03);
+      --text-primary: #f4f4f6;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent-1: #10b981;
+      --accent-2: #34d399;
+      --accent-3: #6ee7b7;
+      --accent-blue: #3b82f6;
+      --accent-orange: #f97316;
+      --accent-red: #ef4444;
+      --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-glow: rgba(16, 185, 129, 0.3);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--accent-1);
+      color: var(--bg-deep);
+    }
+
+    /* Background */
+    .bg-container {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-orb-2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      bottom: -100px;
+      left: -100px;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.05); }
+    }
+
+    .bg-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.25rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(5, 5, 8, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient-1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-1);
+    }
+
+    .nav-cta {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-1);
+      border-color: var(--accent-1);
+      color: var(--bg-deep);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 10rem 4rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .hero-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .hero-breadcrumb a:hover {
+      color: var(--accent-1);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-blue);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease 0.1s forwards;
+      opacity: 0;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient-blue);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Content */
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem 6rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 4rem;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: var(--gradient-1);
+      border-radius: 2px;
+    }
+
+    .section-content {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .section-content p {
+      margin-bottom: 1.25rem;
+    }
+
+    .section-content strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--accent-1);
+    }
+
+    .highlight-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .highlight-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .highlight-list li::before {
+      content: '→';
+      color: var(--accent-1);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Resource Cards Grid */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .resource-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .resource-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -20px rgba(16, 185, 129, 0.2);
+    }
+
+    .resource-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .resource-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .resource-icon.notebook {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(251, 146, 60, 0.1) 100%);
+    }
+
+    .resource-icon.pdf {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(248, 113, 113, 0.1) 100%);
+    }
+
+    .resource-info h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .resource-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-1);
+      margin-top: auto;
+    }
+
+    .resource-link svg {
+      transition: transform 0.3s ease;
+    }
+
+    .resource-card:hover .resource-link svg {
+      transform: translateX(4px);
+    }
+
+    /* Image Block */
+    .image-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+
+    .image-placeholder {
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      position: relative;
+    }
+
+    .image-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+    }
+
+    .image-placeholder-content {
+      text-align: center;
+      z-index: 1;
+    }
+
+    .image-placeholder-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+    }
+
+    .image-placeholder-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .image-caption {
+      padding: 1rem 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .sidebar-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-card:hover {
+      border-color: var(--border-glow);
+    }
+
+    .sidebar-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toc-list a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      display: block;
+      transition: all 0.3s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .toc-list a:hover,
+    .toc-list a.active {
+      color: var(--accent-1);
+      background: rgba(16, 185, 129, 0.05);
+      border-left-color: var(--accent-1);
+    }
+
+    /* Related Pages */
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .related-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .related-item:hover {
+      border-color: var(--border-glow);
+      transform: translateX(4px);
+    }
+
+    .related-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .related-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .footer-nav a:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+    }
+
+    .footer-copyright {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .sidebar-card {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 8rem 1.5rem 4rem;
+      }
+
+      .content {
+        padding: 0 1.5rem 4rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-container">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <nav>
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">🦗</div>
+      FoldableRobotics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#projects" class="active">Projects</a></li>
+      <li><a href="../index.html#tech">Technology</a></li>
+      <li><a href="../index.html#team">Team</a></li>
+    </ul>
+    <a href="report-and-video.html" class="nav-cta">Watch Demo →</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-breadcrumb">
+      <a href="../index.html">Home</a>
+      <span>/</span>
+      <a href="index.html">Project 2</a>
+      <span>/</span>
+      <span>Design Optimization</span>
+    </div>
+    <div class="hero-badge">
+      <span>📈</span>
+      Section 02
+    </div>
+    <h1>Design <span class="gradient-text">Optimization</span></h1>
+    <p class="hero-desc">
+      Parameter tuning and data-driven dynamics to maximize jump height, stability, and energy efficiency of the grasshopper-inspired mechanism.
+    </p>
+  </section>
+
+  <div class="content">
+    <div class="content-grid">
+      <main class="main-content">
+        <section class="section" id="overview">
+          <h2 class="section-title">Overview</h2>
+          <div class="section-content">
+            <p>
+              This section details the <strong>design optimization</strong> process for our grasshopper-inspired jumping robot. We employ data-driven approaches to identify optimal parameters that maximize jumping performance while maintaining mechanism stability.
+            </p>
+            <p>
+              The optimization pipeline integrates <strong>MuJoCo simulation</strong> with systematic parameter sweeps to explore the design space and identify configurations that achieve the best trade-off between jump height, energy efficiency, and landing stability.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" id="resources">
+          <h2 class="section-title">Resources</h2>
+          <div class="section-content">
+            <p>
+              Access the complete optimization workflow through the Jupyter notebook and downloadable PDF report:
+            </p>
+
+            <div class="resource-grid">
+              <a href="Design_optimization.ipynb" target="_blank" class="resource-card">
+                <div class="resource-card-header">
+                  <div class="resource-icon notebook">📓</div>
+                  <div class="resource-info">
+                    <h4>Design_optimization.ipynb</h4>
+                    <p>Jupyter Notebook</p>
+                  </div>
+                </div>
+                <span class="resource-link">
+                  Open Notebook
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+
+              <a href="Design_optimization.pdf" target="_blank" class="resource-card">
+                <div class="resource-card-header">
+                  <div class="resource-icon pdf">📄</div>
+                  <div class="resource-info">
+                    <h4>Design_optimization.pdf</h4>
+                    <p>PDF Report</p>
+                  </div>
+                </div>
+                <span class="resource-link">
+                  View PDF
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="data-driven">
+          <h2 class="section-title">Data-Driven Dynamics</h2>
+          <div class="section-content">
+            <p>
+              Our approach uses <strong>data-driven dynamics</strong> to characterize the system behavior and guide the optimization process. By collecting simulation data across a range of parameter configurations, we can build predictive models that inform design decisions.
+            </p>
+
+            <div class="highlight-box">
+              <h4>Key Optimization Parameters</h4>
+              <ul class="highlight-list">
+                <li><strong>Link lengths</strong> — Femur and tibia segment dimensions</li>
+                <li><strong>Spring stiffness</strong> — Energy storage element properties</li>
+                <li><strong>Joint damping</strong> — Velocity-dependent resistance coefficients</li>
+                <li><strong>Mass distribution</strong> — Component weights and inertias</li>
+                <li><strong>Actuation timing</strong> — Servo trigger and release sequences</li>
+              </ul>
+            </div>
+
+            <p>
+              The data-driven approach allows us to capture complex nonlinear relationships between design parameters and performance metrics that would be difficult to model analytically.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" id="methodology">
+          <h2 class="section-title">Optimization Methodology</h2>
+          <div class="section-content">
+            <p>
+              Our optimization methodology follows a systematic approach to explore the design space:
+            </p>
+
+            <div class="highlight-box">
+              <h4>Step 1: Define Design Space</h4>
+              <ul class="highlight-list">
+                <li>Identify tunable parameters with physical constraints</li>
+                <li>Set upper and lower bounds based on manufacturing limits</li>
+                <li>Define sampling resolution for each parameter</li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Step 2: Run Simulations</h4>
+              <ul class="highlight-list">
+                <li>Generate parameter combinations (grid search or Latin hypercube)</li>
+                <li>Execute MuJoCo simulations for each configuration</li>
+                <li>Record trajectory data and performance metrics</li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Step 3: Analyze Results</h4>
+              <ul class="highlight-list">
+                <li>Compute objective function values (e.g., max jump height)</li>
+                <li>Visualize parameter sensitivity and interactions</li>
+                <li>Identify Pareto-optimal configurations</li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Step 4: Validate & Refine</h4>
+              <ul class="highlight-list">
+                <li>Test optimal configurations in detailed simulation</li>
+                <li>Verify robustness to parameter variations</li>
+                <li>Iterate with refined search around optimal region</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="results">
+          <h2 class="section-title">Results</h2>
+          <div class="section-content">
+            <p>
+              The optimization process identified configurations that significantly improve jumping performance compared to initial designs. Key findings include:
+            </p>
+
+            <div class="highlight-box">
+              <h4>Optimization Outcomes</h4>
+              <ul class="highlight-list">
+                <li><strong>Jump height improvement:</strong> Achieved through optimal spring preload and release timing</li>
+                <li><strong>Stability enhancement:</strong> Balanced mass distribution reduces tumbling on landing</li>
+                <li><strong>Energy efficiency:</strong> Minimized actuation energy for given jump height</li>
+                <li><strong>Parameter sensitivity:</strong> Identified critical parameters vs. robust ones</li>
+              </ul>
+            </div>
+
+            <div class="image-block">
+              <div class="image-placeholder">
+                <div class="image-placeholder-content">
+                  <div class="image-placeholder-icon">📊</div>
+                  <div class="image-placeholder-text">Parameter Sweep Results Visualization</div>
+                </div>
+              </div>
+              <div class="image-caption">Figure: Optimization landscape showing jump height vs. key design parameters</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">On This Page</h3>
+          <ul class="toc-list">
+            <li><a href="#overview" class="active">Overview</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#data-driven">Data-Driven Dynamics</a></li>
+            <li><a href="#methodology">Methodology</a></li>
+            <li><a href="#results">Results</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Downloads</h3>
+          <div class="related-list">
+            <a href="designoptimization.ipynb" target="_blank" class="related-item">
+              <div class="related-icon">📓</div>
+              <span class="related-text">Jupyter Notebook</span>
+            </a>
+            <a href="designoptimization.pdf" target="_blank" class="related-item">
+              <div class="related-icon">📄</div>
+              <span class="related-text">PDF Report</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Related Pages</h3>
+          <div class="related-list">
+            <a href="system-model.html" class="related-item">
+              <div class="related-icon">📐</div>
+              <span class="related-text">System Model</span>
+            </a>
+            <a href="parameter-identification.html" class="related-item">
+              <div class="related-icon">🔍</div>
+              <span class="related-text">Parameter Identification</span>
+            </a>
+            <a href="experimental-validation.html" class="related-item">
+              <div class="related-icon">🧪</div>
+              <span class="related-text">Experimental Validation</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-nav">
+      <a href="system-model.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        System Model
+      </a>
+      <a href="parameter-identification.html">
+        Parameter Identification
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 Team 12 — Arizona State University — RAS 557
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const sections = document.querySelectorAll('.section');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Active TOC link
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
