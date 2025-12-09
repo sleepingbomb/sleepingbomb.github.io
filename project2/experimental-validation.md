@@ -1,9 +1,12 @@
 ---
 layout: default
-title: "Experimental Validation"
-parent: "Project 2 – Final Robot"
-nav_order: 4
+title: "Parameter Identification"
+parent: "Design Optimization"
+nav_order: 2
 ---
+
+
+
 
 # Experimental Validation
 
