@@ -11,8 +11,8 @@ nav_order: 1
   <iframe
     width="100%"
     height="405"
-    src="https://youtu.be/G64NMB5e7x4?si=ipScaczAtHEiZ1s_"
-    title="YouTube video player"
+    src="https://www.youtube.com/embed/G64NMB5e7x4?si=GBYsrTQRpXsysAUi"
+    title="Working Model – YouTube video player"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin"
