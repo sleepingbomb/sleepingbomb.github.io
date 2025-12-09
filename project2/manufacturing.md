@@ -2,7 +2,7 @@
 layout: default
 title: Manufacturing Plan & Execution
 parent: Project 2 – Final Robot
-nav_order: 3
+nav_order: 2
 ---
 
 # Manufacturing Plan & Execution
