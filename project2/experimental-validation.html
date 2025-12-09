@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experimental Validation | Project 2 — Foldable Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050508;
+      --bg-primary: #0a0b10;
+      --bg-secondary: #0f1118;
+      --bg-card: rgba(15, 17, 24, 0.6);
+      --bg-glass: rgba(255, 255, 255, 0.03);
+      --text-primary: #f4f4f6;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent-1: #10b981;
+      --accent-2: #34d399;
+      --accent-3: #6ee7b7;
+      --accent-teal: #14b8a6;
+      --accent-teal-light: #2dd4bf;
+      --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      --gradient-teal: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-glow: rgba(16, 185, 129, 0.3);
+      --border-teal: rgba(20, 184, 166, 0.3);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--accent-teal); color: white; }
+
+    .bg-container { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: float 20s ease-in-out infinite; }
+    .bg-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%); top: -100px; right: -100px; }
+    .bg-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%); bottom: -100px; left: -100px; animation-delay: -10s; }
+    @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.05); } }
+    .bg-noise { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); opacity: 0.03; pointer-events: none; }
+
+    nav { position: fixed; top: 0; width: 100%; padding: 1.25rem 4rem; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(5, 5, 8, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); }
+    .logo { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--text-primary); text-decoration: none; display: flex; align-items: center; gap: 0.75rem; }
+    .logo-icon { width: 36px; height: 36px; background: var(--gradient-1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s ease; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-1); }
+    .nav-cta { background: var(--bg-glass); border: 1px solid var(--border-subtle); color: var(--text-primary); padding: 0.6rem 1.25rem; border-radius: 100px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease; }
+    .nav-cta:hover { background: var(--accent-1); border-color: var(--accent-1); color: var(--bg-deep); }
+
+    .hero { padding: 10rem 4rem 5rem; max-width: 1200px; margin: 0 auto; }
+    .hero-breadcrumb { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem; animation: fadeIn 0.8s ease forwards; }
+    .hero-breadcrumb a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease; }
+    .hero-breadcrumb a:hover { color: var(--accent-1); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(20, 184, 166, 0.1); border: 1px solid rgba(20, 184, 166, 0.2); padding: 0.5rem 1rem; border-radius: 100px; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--accent-teal); margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease forwards; opacity: 0; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 4.5rem); font-weight: 600; line-height: 1.1; margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease 0.1s forwards; opacity: 0; }
+    .hero h1 .gradient-text { background: var(--gradient-teal); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-desc { font-size: 1.25rem; color: var(--text-secondary); max-width: 700px; margin-bottom: 2rem; animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .content { max-width: 1200px; margin: 0 auto; padding: 0 4rem 6rem; }
+    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; }
+    .main-content { display: flex; flex-direction: column; gap: 4rem; }
+    .section { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+    .section.active { opacity: 1; transform: translateY(0); }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::before { content: ''; width: 4px; height: 28px; background: var(--gradient-teal); border-radius: 2px; }
+    .section-content { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; }
+    .section-content p { margin-bottom: 1.25rem; }
+    .section-content strong { color: var(--text-primary); font-weight: 600; }
+
+    .pdf-download-card { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 2rem; display: flex; align-items: center; gap: 1.5rem; margin: 1.5rem 0; transition: all 0.4s ease; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
+    .pdf-download-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-teal); transform: scaleX(0); transition: transform 0.4s ease; }
+    .pdf-download-card:hover { border-color: var(--border-teal); transform: translateY(-4px); box-shadow: 0 25px 50px -20px rgba(20, 184, 166, 0.2); }
+    .pdf-download-card:hover::before { transform: scaleX(1); }
+    .pdf-icon { width: 70px; height: 70px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(248, 113, 113, 0.1) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
+    .pdf-info { flex: 1; }
+    .pdf-info h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .pdf-info p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+    .pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gradient-teal); color: var(--bg-deep); padding: 0.85rem 1.5rem; border-radius: 100px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+    .pdf-download-card:hover .pdf-btn { box-shadow: 0 10px 30px rgba(20, 184, 166, 0.3); }
+
+    .config-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background: var(--bg-glass); backdrop-filter: blur(20px); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .config-table th, .config-table td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+    .config-table th { background: rgba(20, 184, 166, 0.1); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-teal); }
+    .config-table tr:last-child td { border-bottom: none; }
+    .config-table td { font-size: 0.95rem; color: var(--text-secondary); }
+    .config-table td:first-child { font-weight: 600; color: var(--text-primary); }
+    .config-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .config-badge.small { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .config-badge.medium { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
+    .config-badge.large { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+
+    .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+    .result-card { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 1.5rem; transition: all 0.3s ease; }
+    .result-card:hover { border-color: var(--border-teal); transform: translateY(-4px); }
+    .result-card h4 { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-teal); margin-bottom: 1rem; }
+    .result-winner { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .result-badge { padding: 0.5rem 1rem; border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; }
+    .result-badge.medium { background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(251, 146, 60, 0.1) 100%); color: #fb923c; }
+    .result-badge.large { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(74, 222, 128, 0.1) 100%); color: #4ade80; }
+    .result-value { font-family: 'Space Mono', monospace; font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
+    .result-card p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+
+    .highlight-box { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 1.75rem; margin: 1.5rem 0; }
+    .highlight-box h4 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent-teal); }
+    .highlight-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .highlight-list li { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--text-secondary); font-size: 0.95rem; }
+    .highlight-list li::before { content: '→'; color: var(--accent-teal); font-weight: 600; flex-shrink: 0; }
+
+    .conclusion-box { background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(20, 184, 166, 0.2); border-radius: 16px; padding: 2rem; margin: 1.5rem 0; }
+    .conclusion-box h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent-teal); display: flex; align-items: center; gap: 0.5rem; }
+    .conclusion-box p { color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin: 0; }
+    .conclusion-box strong { color: var(--text-primary); }
+
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 100px; height: fit-content; }
+    .sidebar-card { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 1.5rem; transition: all 0.3s ease; }
+    .sidebar-card:hover { border-color: var(--border-glow); }
+    .sidebar-title { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .toc-list a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; padding: 0.5rem 0.75rem; border-radius: 8px; display: block; transition: all 0.3s ease; border-left: 2px solid transparent; }
+    .toc-list a:hover, .toc-list a.active { color: var(--accent-teal); background: rgba(20, 184, 166, 0.05); border-left-color: var(--accent-teal); }
+
+    .related-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .related-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.3s ease; }
+    .related-item:hover { border-color: var(--border-glow); transform: translateX(4px); }
+    .related-icon { width: 32px; height: 32px; background: var(--gradient-1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .related-text { font-size: 0.85rem; color: var(--text-secondary); }
+
+    footer { padding: 3rem 4rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .footer-nav { display: flex; gap: 1rem; }
+    .footer-nav a { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; padding: 0.75rem 1.25rem; border-radius: 100px; border: 1px solid var(--border-subtle); transition: all 0.3s ease; }
+    .footer-nav a:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+    .footer-copyright { font-size: 0.8rem; color: var(--text-muted); }
+
+    @media (max-width: 1024px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
+      .sidebar-card { flex: 1; min-width: 250px; }
+      .results-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .content { padding: 0 1.5rem 4rem; }
+      .pdf-download-card { flex-direction: column; text-align: center; }
+      .config-table { font-size: 0.85rem; }
+      .config-table th, .config-table td { padding: 0.75rem; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-container">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <nav>
+    <a href="../index.html" class="logo">
+      <div class="logo-icon">🦗</div>
+      FoldableRobotics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#projects" class="active">Projects</a></li>
+      <li><a href="../index.html#tech">Technology</a></li>
+      <li><a href="../index.html#team">Team</a></li>
+    </ul>
+    <a href="report-and-video.html" class="nav-cta">Watch Demo →</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-breadcrumb">
+      <a href="../index.html">Home</a>
+      <span>/</span>
+      <a href="index.html">Project 2</a>
+      <span>/</span>
+      <span>Experimental Validation</span>
+    </div>
+    <div class="hero-badge">
+      <span>🧪</span>
+      Physical Testing
+    </div>
+    <h1>Experimental <span class="gradient-text">Validation</span></h1>
+    <p class="hero-desc">
+      Geometric scaling analysis comparing Small, Medium, and Large robot configurations to validate simulation predictions and optimize jumping performance.
+    </p>
+  </section>
+
+  <div class="content">
+    <div class="content-grid">
+      <main class="main-content">
+        <section class="section" id="overview">
+          <h2 class="section-title">Overview</h2>
+          <div class="section-content">
+            <p>
+              This section documents the <strong>experimental validation</strong> of our grasshopper-inspired jumping robot. The primary objective was to empirically validate the relationship between link length and locomotion performance through systematic testing.
+            </p>
+            <p>
+              By varying the geometric scale of the four-bar linkage across three configurations, we observed the trade-offs between <strong>stride length</strong>, <strong>jump height</strong>, and <strong>kinematic stability</strong>.
+            </p>
+
+            <a href="experimental.pdf" target="_blank" class="pdf-download-card">
+              <div class="pdf-icon">📄</div>
+              <div class="pdf-info">
+                <h3>Experimental Validation Report</h3>
+                <p>Complete analysis with methodology, data visualization, and conclusions</p>
+              </div>
+              <span class="pdf-btn">
+                View PDF
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section class="section" id="configurations">
+          <h2 class="section-title">Test Configurations</h2>
+          <div class="section-content">
+            <p>
+              Three distinct robot configurations were evaluated, with each iteration created by adding a uniform length increment to every link in the kinematic chain:
+            </p>
+
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>Configuration</th>
+                  <th>Link A (Base)</th>
+                  <th>Link B (Crank)</th>
+                  <th>Link C (Coupler)</th>
+                  <th>Link D (Leg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="config-badge small">Small (Baseline)</span></td>
+                  <td>4 cm</td>
+                  <td>4 cm</td>
+                  <td>2 cm</td>
+                  <td>6 cm</td>
+                </tr>
+                <tr>
+                  <td><span class="config-badge medium">Medium (+1 cm)</span></td>
+                  <td>5 cm</td>
+                  <td>5 cm</td>
+                  <td>3 cm</td>
+                  <td>7 cm</td>
+                </tr>
+                <tr>
+                  <td><span class="config-badge large">Large (+2 cm)</span></td>
+                  <td>6 cm</td>
+                  <td>6 cm</td>
+                  <td>4 cm</td>
+                  <td>8 cm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="methodology">
+          <h2 class="section-title">Methodology</h2>
+          <div class="section-content">
+            <div class="highlight-box">
+              <h4>Data Acquisition Protocol</h4>
+              <ul class="highlight-list">
+                <li><strong>Execution</strong> — Robot placed on flat, high-friction surface with Bang-Bang control</li>
+                <li><strong>Video Recording</strong> — HD camera positioned orthogonal to plane of motion</li>
+                <li><strong>Tracker Analysis</strong> — Frame-by-frame tracking of "Nose" and "Foot" markers</li>
+                <li><strong>Data Export</strong> — Coordinate data processed for performance metrics</li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Performance Metrics (KPIs)</h4>
+              <ul class="highlight-list">
+                <li><strong>Longitudinal Displacement</strong> — Continuous position x(t) over time</li>
+                <li><strong>Total Distance Traveled</strong> — Net forward distance after hopping duration</li>
+                <li><strong>Maximum Jump Height</strong> — Peak vertical displacement (y_max) during flight phase</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="results">
+          <h2 class="section-title">Key Results</h2>
+          <div class="section-content">
+            <p>
+              The experimental evaluation revealed a distinct trade-off between longitudinal speed and vertical capability:
+            </p>
+
+            <div class="results-grid">
+              <div class="result-card">
+                <h4>Best Longitudinal Displacement</h4>
+                <div class="result-winner">
+                  <span class="result-badge large">Large Config</span>
+                </div>
+                <p>Greatest total distance traveled, significantly outperforming baseline. Longer legs increase effective stride length.</p>
+              </div>
+
+              <div class="result-card">
+                <h4>Best Jump Height</h4>
+                <div class="result-winner">
+                  <span class="result-badge medium">Medium Config</span>
+                  <span class="result-value">114 mm</span>
+                </div>
+                <p>Optimal balance between kinematic reach and motor torque capacity. The "sweet spot" configuration.</p>
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <h4>Physical Interpretation</h4>
+              <ul class="highlight-list">
+                <li><strong>Small Legs</strong> — Motors have ample torque, but short links limit vertical range of motion (65 mm jump)</li>
+                <li><strong>Medium Legs</strong> — Balances kinematic benefit with dynamic motor limitations (114 mm jump)</li>
+                <li><strong>Large Legs</strong> — Lever arm too long; torque required exceeds motor stall limits (64 mm jump)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="conclusion">
+          <h2 class="section-title">Conclusion</h2>
+          <div class="section-content">
+            <div class="conclusion-box">
+              <h4>🎯 Final Design Recommendation</h4>
+              <p>
+                While the <strong>Large configuration</strong> offers the best forward velocity, the <strong>Medium Configuration</strong> provides the most robust overall performance, maximizing obstacle clearance (jump height) while maintaining competitive forward travel.
+                <br><br>
+                Future iterations should utilize the <strong>Medium geometry</strong> unless higher-torque motors are upgraded to support the Large linkage. This validates our simulation predictions and demonstrates the critical importance of actuator-mechanism matching in bio-inspired robotics.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">On This Page</h3>
+          <ul class="toc-list">
+            <li><a href="#overview" class="active">Overview</a></li>
+            <li><a href="#configurations">Test Configurations</a></li>
+            <li><a href="#methodology">Methodology</a></li>
+            <li><a href="#results">Key Results</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Download</h3>
+          <div class="related-list">
+            <a href="experimental.pdf" target="_blank" class="related-item">
+              <div class="related-icon">📄</div>
+              <span class="related-text">Full Report (PDF)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Related Pages</h3>
+          <div class="related-list">
+            <a href="system-model.html" class="related-item">
+              <div class="related-icon">📐</div>
+              <span class="related-text">System Model</span>
+            </a>
+            <a href="parameter-identification.html" class="related-item">
+              <div class="related-icon">🔍</div>
+              <span class="related-text">Parameter Identification</span>
+            </a>
+            <a href="Working_Model.html" class="related-item">
+              <div class="related-icon">🤖</div>
+              <span class="related-text">Working Model</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-nav">
+      <a href="manufacturing.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Manufacturing
+      </a>
+      <a href="report-and-video.html">
+        Report & Video
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 Team 12 — Arizona State University — RAS 557
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => { if (scrollY >= section.offsetTop - 200) current = section.getAttribute('id'); });
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
+
