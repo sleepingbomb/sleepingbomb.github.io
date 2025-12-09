@@ -13,7 +13,7 @@ modeled in MuJoCo and built as a laminated prototype.
 
 The structure of this section follows the assignment:
 
-1. [Working Model](./(https://youtu.be/G64NMB5e7x4))
+1. [Working Model](Working_Model.md)
 2. [Manufacturing Plan & Execution](./manufacturing.pdf)
 3. [Design Optimization](./optimization/)
    - [Parameter Identification](./parameter-identification.html)
