@@ -1,21 +1,895 @@
----
-layout: default
-title: "Project 2 – Final Robot"
-nav_order: 3
-has_children: true
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project 2 — Final Robot | Foldable Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050508;
+      --bg-primary: #0a0b10;
+      --bg-secondary: #0f1118;
+      --bg-card: rgba(15, 17, 24, 0.6);
+      --bg-glass: rgba(255, 255, 255, 0.03);
+      --text-primary: #f4f4f6;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent-1: #10b981;
+      --accent-2: #34d399;
+      --accent-3: #6ee7b7;
+      --accent-purple: #a78bfa;
+      --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-glow: rgba(16, 185, 129, 0.3);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
 
-# Project 2 – Final Robot
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-This project documents my final robot for the Foldable Robotics course: a
-**foldable, grasshopper-inspired robot** based on a **four-bar mechanism**,
-modeled in MuJoCo and built as a laminated prototype.
+    html {
+      scroll-behavior: smooth;
+    }
 
-The structure of this section follows the assignment:
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-1. [Working Model](Working_Model.md)
-2. [Manufacturing Plan & Execution](./manufacturing.pdf)
-3. [Design Optimization](./optimization/)
-   - [Parameter Identification](./parameter-identification.html)
-   - [Experimental Validation](./experimental-validation/)
-4. [Presentation & Video](./report-and-video/)
+    ::selection {
+      background: var(--accent-1);
+      color: var(--bg-deep);
+    }
+
+    /* Background */
+    .bg-container {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+      top: -150px;
+      left: -150px;
+      animation-delay: 0s;
+    }
+
+    .bg-orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+      bottom: -100px;
+      right: -100px;
+      animation-delay: -10s;
+    }
+
+    .bg-orb-3 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%);
+      top: 50%;
+      right: 20%;
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.05); }
+    }
+
+    .bg-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.25rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(5, 5, 8, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient-1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-1);
+    }
+
+    .nav-cta {
+      background: var(--gradient-1);
+      border: none;
+      color: var(--bg-deep);
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 10rem 4rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-breadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .hero-breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .hero-breadcrumb a:hover {
+      color: var(--accent-1);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-1);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease 0.1s forwards;
+      opacity: 0;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+      opacity: 0;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      animation: fadeInUp 0.8s ease 0.3s forwards;
+      opacity: 0;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sections Grid */
+    .sections-intro {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem 3rem;
+      text-align: center;
+    }
+
+    .sections-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .sections-intro p {
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .sections-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-1);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-glow);
+      box-shadow: 0 20px 40px -20px rgba(16, 185, 129, 0.2);
+    }
+
+    .section-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .section-card-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--gradient-1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .section-card:hover .section-card-icon {
+      transform: scale(1.1);
+    }
+
+    .section-card-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-1);
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .section-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .section-card-arrow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--accent-1);
+      font-weight: 600;
+      transition: gap 0.3s ease;
+    }
+
+    .section-card:hover .section-card-arrow {
+      gap: 0.75rem;
+    }
+
+    /* Featured Card */
+    .section-card.featured {
+      grid-column: span 3;
+      flex-direction: row;
+      align-items: center;
+      gap: 3rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(52, 211, 153, 0.03) 100%);
+      border-color: var(--border-glow);
+    }
+
+    .section-card.featured .section-card-icon {
+      width: 80px;
+      height: 80px;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .section-card.featured .featured-content {
+      flex-grow: 1;
+    }
+
+    .section-card.featured h3 {
+      font-size: 1.5rem;
+    }
+
+    .section-card.featured p {
+      max-width: 500px;
+    }
+
+    .section-card.featured .section-card-arrow {
+      flex-shrink: 0;
+      background: var(--gradient-1);
+      color: var(--bg-deep);
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      margin-top: 0;
+    }
+
+    /* Overview Section */
+    .overview {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .overview-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .overview-content p {
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    .overview-visual {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      position: relative;
+    }
+
+    .overview-visual-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    }
+
+    .overview-visual-content {
+      text-align: center;
+    }
+
+    .overview-visual-icon {
+      font-size: 6rem;
+      margin-bottom: 1rem;
+      animation: bounce 3s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .overview-visual-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Tech Stack Mini */
+    .tech-mini {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem 6rem;
+    }
+
+    .tech-mini-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .tech-mini-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .tech-mini-grid {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .tech-pill:hover {
+      border-color: var(--border-glow);
+      color: var(--text-primary);
+    }
+
+    .tech-pill span {
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .footer-nav a:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+    }
+
+    .footer-copyright {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sections-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section-card.featured {
+        grid-column: span 2;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .section-card.featured .section-card-arrow {
+        margin-top: 1.5rem;
+      }
+
+      .overview {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 8rem 1.5rem 4rem;
+      }
+
+      .hero-stats {
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+
+      .sections-intro,
+      .sections-grid,
+      .overview,
+      .tech-mini {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      .sections-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-card.featured {
+        grid-column: span 1;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-container">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <nav>
+    <a href="../" class="logo">
+      <div class="logo-icon">🦗</div>
+      FoldableRobotics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../#projects" class="active">Projects</a></li>
+      <li><a href="../#tech">Technology</a></li>
+      <li><a href="../#team">Team</a></li>
+    </ul>
+    <a href="report-and-video.html" class="nav-cta">Watch Demo →</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-breadcrumb">
+      <a href="../">Home</a>
+      <span>/</span>
+      <span>Project 2</span>
+    </div>
+    <div class="hero-badge">
+      <span>🦗</span>
+      Project 02 — Final Implementation
+    </div>
+    <h1>Final <span class="gradient-text">Robot</span></h1>
+    <p class="hero-desc">
+      Complete implementation of our grasshopper-inspired jumping mechanism — from MuJoCo simulation to laser-cut fabrication and experimental validation.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">4-Bar</div>
+        <div class="stat-label">Linkage Design</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">MuJoCo</div>
+        <div class="stat-label">Physics Simulation</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">ESP32</div>
+        <div class="stat-label">Control System</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sections-intro reveal">
+    <h2>Project Documentation</h2>
+    <p>Explore each phase of our development process, from dynamic modeling to physical testing.</p>
+  </div>
+
+  <div class="sections-grid">
+    <a href="system-model.html" class="section-card reveal">
+      <div class="section-card-icon">📐</div>
+      <div class="section-card-number">Section 01</div>
+      <h3>System Model</h3>
+      <p>MuJoCo physics simulation with multi-body dynamics, contact modeling, and servo motor integration for accurate jumping behavior prediction.</p>
+      <div class="section-card-arrow">
+        Explore
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="optimization.html" class="section-card reveal">
+      <div class="section-card-icon">📈</div>
+      <div class="section-card-number">Section 02</div>
+      <h3>Design Optimization</h3>
+      <p>Parameter tuning and genetic algorithm optimization to maximize jump height, stability, and energy efficiency of the mechanism.</p>
+      <div class="section-card-arrow">
+        Explore
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="parameter-identification.html" class="section-card reveal">
+      <div class="section-card-icon">🔍</div>
+      <div class="section-card-number">Section 03</div>
+      <h3>Parameter Identification</h3>
+      <p>Characterizing physical system parameters through experimental measurements and calibration procedures.</p>
+      <div class="section-card-arrow">
+        Explore
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="manufacturing.html" class="section-card reveal">
+      <div class="section-card-icon">🛠️</div>
+      <div class="section-card-number">Section 04</div>
+      <h3>Manufacturing Plan</h3>
+      <p>Laser-cut laminate fabrication workflow, material selection, DXF file generation, and assembly instructions.</p>
+      <div class="section-card-arrow">
+        Explore
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="experimental-validation.html" class="section-card reveal">
+      <div class="section-card-icon">🧪</div>
+      <div class="section-card-number">Section 05</div>
+      <h3>Experimental Validation</h3>
+      <p>Physical testing results, performance metrics, and comparison between simulation predictions and real-world behavior.</p>
+      <div class="section-card-arrow">
+        Explore
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="report-and-video.html" class="section-card featured reveal">
+      <div class="section-card-icon">🎬</div>
+      <div class="featured-content">
+        <div class="section-card-number">Section 06</div>
+        <h3>Final Report & Demo Video</h3>
+        <p>Complete technical documentation and video demonstration showcasing the jumping robot in action.</p>
+      </div>
+      <div class="section-card-arrow">
+        Watch Demo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </div>
+    </a>
+  </div>
+
+  <section class="overview reveal">
+    <div class="overview-content">
+      <h2>Project Overview</h2>
+      <p>
+        Our final robot implementation brings together months of research, simulation, and iterative design into a functional biomimetic jumping mechanism.
+      </p>
+      <p>
+        The design features a <strong>four-bar linkage</strong> that replicates the mechanical advantage and motion characteristics of a grasshopper's hind leg. Energy is stored in cardstock spring elements during the compression phase, then released explosively to achieve the jump.
+      </p>
+      <p>
+        Actuation is provided by <strong>SG90 micro servo motors</strong> controlled via an <strong>ESP32 microcontroller</strong>, enabling precise timing and repeatable jump cycles. The entire mechanism is fabricated using laser-cut laminates, demonstrating the power of foldable robotics principles.
+      </p>
+    </div>
+    <div class="overview-visual">
+      <div class="overview-visual-inner">
+        <div class="overview-visual-content">
+          <div class="overview-visual-icon">🦗</div>
+          <div class="overview-visual-text">Grasshopper-Inspired Mechanism</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tech-mini reveal">
+    <div class="tech-mini-header">
+      <h2>Technologies Used</h2>
+    </div>
+    <div class="tech-mini-grid">
+      <div class="tech-pill"><span>⚙️</span> MuJoCo</div>
+      <div class="tech-pill"><span>🐍</span> Python</div>
+      <div class="tech-pill"><span>📓</span> Jupyter</div>
+      <div class="tech-pill"><span>✂️</span> Laser Cutting</div>
+      <div class="tech-pill"><span>📡</span> ESP32</div>
+      <div class="tech-pill"><span>🔧</span> SG90 Servos</div>
+      <div class="tech-pill"><span>📊</span> Plotly</div>
+      <div class="tech-pill"><span>🎨</span> k3d</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-nav">
+      <a href="../project1/">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Project 1: Proposal
+      </a>
+      <a href="../">
+        Back to Home
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 Team 12 — Arizona State University — RAS 557
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('active');
+          }, index * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(reveal => observer.observe(reveal));
+  </script>
+</body>
+</html>
