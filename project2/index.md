@@ -13,9 +13,9 @@ modeled in MuJoCo and built as a laminated prototype.
 
 The structure of this section follows the assignment:
 
-1. [System Model (MuJoCo)](./system-model/)
-2. [Design Optimization](./optimization/)
+1. [Working Model](./(https://youtu.be/G64NMB5e7x4))
+2. [Manufacturing Plan & Execution](./manufacturing.pdf)
+3. [Design Optimization](./optimization/)
    - [Parameter Identification](./parameter-identification.html)
-3. [Manufacturing Plan & Execution](./manufacturing.pdf)
-4. [Experimental Validation](./experimental-validation/)
-5. [Report & Video](./report-and-video/)
+   -[Experimental Validation](./experimental-validation/)
+4. [Presentation & Video](./report-and-video/)
