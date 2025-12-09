@@ -152,6 +152,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      text-decoration: none;
     }
 
     .logo-icon {
@@ -493,7 +494,9 @@
       overflow: hidden;
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
-      group: project;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .project-card::before {
@@ -622,7 +625,7 @@
       transition: transform 0.3s ease;
     }
 
-    .project-link:hover svg {
+    .project-card:hover .project-link svg {
       transform: translateX(4px);
     }
 
@@ -995,10 +998,10 @@
   </div>
 
   <nav id="navbar">
-    <div class="logo">
+    <a href="index.html" class="logo">
       <div class="logo-icon">🦗</div>
       FoldableRobotics
-    </div>
+    </a>
     <ul class="nav-links">
       <li><a href="#projects">Projects</a></li>
       <li><a href="#tech">Technology</a></li>
@@ -1070,7 +1073,7 @@
     </div>
 
     <div class="projects-showcase">
-      <div class="project-card reveal">
+      <a href="project1/index.html" class="project-card reveal">
         <div class="project-visual">
           <div class="project-visual-bg">
             <svg viewBox="0 0 400 240" fill="none">
@@ -1090,16 +1093,16 @@
             <span class="meta-tag">Biomechanics</span>
             <span class="meta-tag">Kinematics</span>
           </div>
-          <a href="project1/" class="project-link">
+          <span class="project-link">
             View Proposal
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-          </a>
+          </span>
         </div>
-      </div>
+      </a>
 
-      <div class="project-card reveal">
+      <a href="project2/index.html" class="project-card reveal">
         <div class="project-visual">
           <div class="project-visual-bg">
             <svg viewBox="0 0 400 240" fill="none">
@@ -1122,14 +1125,14 @@
             <span class="meta-tag">Optimization</span>
             <span class="meta-tag">Fabrication</span>
           </div>
-          <a href="project2/" class="project-link">
+          <span class="project-link">
             Explore Project
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-          </a>
+          </span>
         </div>
-      </div>
+      </a>
     </div>
 
     <div class="sub-projects reveal">
@@ -1137,9 +1140,9 @@
         <h3>Project 2 — Deep Dive</h3>
       </div>
       <div class="sub-grid">
-        <a href="project2/Working_Model.html" class="sub-card">
+        <a href="project2/system-model.html" class="sub-card">
           <div class="sub-card-icon">📐</div>
-          <h4>Working Model</h4>
+          <h4>System Model</h4>
           <p>MuJoCo physics simulation and dynamic analysis</p>
         </a>
 
@@ -1256,8 +1259,8 @@
     </div>
     <p class="footer-desc">A Final Year Project exploring biomimetic design through the lens of foldable robotics principles.</p>
     <div class="footer-links">
-      <a href="project1/">Proposal</a>
-      <a href="project2/">Final Robot</a>
+      <a href="project1/index.html">Proposal</a>
+      <a href="project2/index.html">Final Robot</a>
       <a href="project2/report-and-video.html">Report</a>
     </div>
     <p class="copyright">© 2025 Team 12 — Arizona State University — RAS 557</p>
@@ -1282,7 +1285,7 @@
         if (entry.isIntersecting) {
           setTimeout(() => {
             entry.target.classList.add('active');
-          }, index * 100);
+          }, index * 80);
         }
       });
     }, {
