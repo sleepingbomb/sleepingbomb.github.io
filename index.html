@@ -3,23 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team 12 | Foldable Robotics Portfolio</title>
+  <title>Foldable Robotics | Grasshopper-Inspired Jumping Mechanism</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-card: #1a1a24;
-      --accent-primary: #00d4aa;
-      --accent-secondary: #7b61ff;
-      --accent-warm: #ff6b4a;
-      --text-primary: #f0f0f5;
-      --text-secondary: #8a8a9a;
-      --text-muted: #5a5a6a;
-      --border: #2a2a3a;
-      --glow: rgba(0, 212, 170, 0.15);
+      --bg-deep: #050508;
+      --bg-primary: #0a0b10;
+      --bg-secondary: #0f1118;
+      --bg-card: rgba(15, 17, 24, 0.6);
+      --bg-glass: rgba(255, 255, 255, 0.03);
+      --text-primary: #f4f4f6;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent-1: #10b981;
+      --accent-2: #34d399;
+      --accent-3: #6ee7b7;
+      --accent-gold: #fbbf24;
+      --accent-purple: #a78bfa;
+      --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+      --gradient-2: linear-gradient(135deg, #0f1118 0%, #1a1d2e 100%);
+      --gradient-glow: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-glow: rgba(16, 185, 129, 0.3);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
 
     * {
@@ -33,61 +41,133 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--bg-primary);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.7;
       overflow-x: hidden;
+      cursor: default;
     }
 
-    /* Animated background grid */
-    .bg-grid {
+    ::selection {
+      background: var(--accent-1);
+      color: var(--bg-deep);
+    }
+
+    /* Animated Background */
+    .bg-container {
       position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+      top: -200px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -7s;
+    }
+
+    .bg-orb-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -14s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(20px, 30px) scale(1.02); }
+    }
+
+    .bg-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    .bg-grid {
+      position: absolute;
       inset: 0;
       background-image: 
-        linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .bg-gradient {
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(123, 97, 255, 0.08), transparent),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 212, 170, 0.06), transparent);
-      pointer-events: none;
-      z-index: 0;
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 20%, transparent 100%);
     }
 
     /* Navigation */
     nav {
       position: fixed;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 1.5rem 3rem;
+      width: 100%;
+      padding: 1.5rem 4rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10, 10, 15, 0.8);
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 1rem 4rem;
+      background: rgba(5, 5, 8, 0.8);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .logo {
       font-family: 'Space Mono', monospace;
       font-size: 0.9rem;
-      color: var(--accent-primary);
-      letter-spacing: 2px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient-1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
     }
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 3rem;
       list-style: none;
     }
 
@@ -96,33 +176,30 @@
       text-decoration: none;
       font-size: 0.9rem;
       font-weight: 500;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
       position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--accent-primary);
-      transition: width 0.3s;
     }
 
     .nav-links a:hover {
       color: var(--text-primary);
     }
 
-    .nav-links a:hover::after {
-      width: 100%;
+    .nav-cta {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
 
-    /* Main content wrapper */
-    main {
-      position: relative;
-      z-index: 1;
+    .nav-cta:hover {
+      background: var(--accent-1);
+      border-color: var(--accent-1);
+      color: var(--bg-deep);
     }
 
     /* Hero Section */
@@ -131,382 +208,729 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8rem 3rem 4rem;
-      max-width: 1400px;
-      margin: 0 auto;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
     }
 
-    .hero-tag {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--accent-primary);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      animation: fadeInDown 1s ease forwards;
       opacity: 0;
-      animation: fadeSlideUp 0.8s ease forwards;
-      animation-delay: 0.2s;
+    }
+
+    .hero-eyebrow .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-1);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 20px var(--accent-1);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 700;
-      line-height: 1.1;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 600;
+      line-height: 1.05;
       margin-bottom: 1.5rem;
+      animation: fadeInUp 1s ease 0.2s forwards;
       opacity: 0;
-      animation: fadeSlideUp 0.8s ease forwards;
-      animation-delay: 0.4s;
+      letter-spacing: -0.02em;
     }
 
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    .hero h1 .gradient-text {
+      background: var(--gradient-1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .hero-description {
+    .hero h1 .italic {
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .hero-subtitle {
       font-size: 1.25rem;
       color: var(--text-secondary);
       max-width: 600px;
-      margin-bottom: 3rem;
+      margin: 0 auto 3rem;
+      animation: fadeInUp 1s ease 0.4s forwards;
       opacity: 0;
-      animation: fadeSlideUp 0.8s ease forwards;
-      animation-delay: 0.6s;
+      font-weight: 400;
     }
 
     .hero-cta {
       display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1rem;
+      animation: fadeInUp 1s ease 0.6s forwards;
       opacity: 0;
-      animation: fadeSlideUp 0.8s ease forwards;
-      animation-delay: 0.8s;
     }
 
     .btn {
+      padding: 1rem 2rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      cursor: pointer;
+      gap: 0.6rem;
       border: none;
+      cursor: pointer;
     }
 
     .btn-primary {
-      background: var(--accent-primary);
-      color: var(--bg-primary);
+      background: var(--gradient-1);
+      color: var(--bg-deep);
+      box-shadow: 0 4px 30px rgba(16, 185, 129, 0.3);
     }
 
     .btn-primary:hover {
-      background: #00e6b8;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px var(--glow);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
     }
 
     .btn-secondary {
-      background: transparent;
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
       color: var(--text-primary);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
     }
 
     .btn-secondary:hover {
-      border-color: var(--accent-primary);
-      color: var(--accent-primary);
+      border-color: var(--accent-1);
+      background: rgba(16, 185, 129, 0.1);
     }
 
-    /* Section styling */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating Elements */
+    .hero-float {
+      position: absolute;
+      animation: gentleFloat 6s ease-in-out infinite;
+    }
+
+    .hero-float-1 {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .hero-float-2 {
+      top: 30%;
+      right: 12%;
+      animation-delay: -2s;
+    }
+
+    .hero-float-3 {
+      bottom: 25%;
+      left: 15%;
+      animation-delay: -4s;
+    }
+
+    .float-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .float-card .icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      animation: fadeInUp 1s ease 0.8s forwards;
+      opacity: 0;
+    }
+
+    .scroll-indicator .mouse {
+      width: 24px;
+      height: 38px;
+      border: 2px solid var(--text-muted);
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .scroll-indicator .mouse::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: var(--accent-1);
+      border-radius: 2px;
+      animation: scrollBounce 2s infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.3; transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Section Styling */
     section {
-      padding: 6rem 3rem;
-      max-width: 1400px;
-      margin: 0 auto;
+      padding: 8rem 4rem;
+      position: relative;
     }
 
     .section-header {
-      margin-bottom: 4rem;
+      text-align: center;
+      margin-bottom: 5rem;
     }
 
     .section-tag {
       font-family: 'Space Mono', monospace;
       font-size: 0.8rem;
-      color: var(--accent-secondary);
-      letter-spacing: 3px;
+      color: var(--accent-1);
       text-transform: uppercase;
+      letter-spacing: 0.2em;
       margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .section-tag::before,
+    .section-tag::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--border-subtle);
     }
 
     .section-title {
-      font-size: 2.5rem;
-      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
     }
 
-    /* Project Cards */
-    .projects-grid {
+    .section-desc {
+      color: var(--text-secondary);
+      max-width: 550px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+
+    /* Projects Section */
+    .projects-showcase {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .project-card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      transition: all 0.4s;
-      position: relative;
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
       overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      group: project;
     }
 
     .project-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-      transform: scaleX(0);
-      transition: transform 0.4s;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
 
     .project-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--accent-primary);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transform: translateY(-10px);
+      border-color: var(--border-glow);
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5), 0 0 50px rgba(16, 185, 129, 0.1);
     }
 
     .project-card:hover::before {
-      transform: scaleX(1);
+      opacity: 1;
     }
 
-    .project-number {
-      font-family: 'Space Mono', monospace;
-      font-size: 4rem;
-      font-weight: 700;
-      color: var(--bg-secondary);
-      -webkit-text-stroke: 1px var(--border);
-      position: absolute;
-      top: 1rem;
-      right: 2rem;
-      transition: color 0.3s;
-    }
-
-    .project-card:hover .project-number {
-      color: transparent;
-      -webkit-text-stroke: 1px var(--accent-primary);
-    }
-
-    .project-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+    .project-visual {
+      height: 240px;
       position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     }
 
-    .project-card p {
+    .project-visual-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.5;
+    }
+
+    .project-visual-bg svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .project-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 5rem;
+      filter: grayscale(0.3);
+      transition: all 0.5s ease;
+    }
+
+    .project-card:hover .project-icon {
+      transform: translate(-50%, -50%) scale(1.1);
+      filter: grayscale(0);
+    }
+
+    .project-badge {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-1);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.4rem 0.8rem;
+      border-radius: 100px;
+      backdrop-filter: blur(10px);
+    }
+
+    .project-content {
+      padding: 2rem;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-desc {
       color: var(--text-secondary);
       margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
-    .project-tags {
+    .project-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    .tag {
+    .meta-tag {
       font-family: 'Space Mono', monospace;
-      font-size: 0.75rem;
-      padding: 0.4rem 0.8rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 4px;
+      font-size: 0.7rem;
+      padding: 0.4rem 0.75rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
       color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover .meta-tag {
+      border-color: var(--border-glow);
+      color: var(--text-secondary);
     }
 
     .project-link {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--accent-primary);
+      color: var(--accent-1);
       text-decoration: none;
-      font-weight: 500;
-      transition: gap 0.3s;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
     }
 
     .project-link:hover {
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .project-link svg {
-      width: 20px;
-      height: 20px;
+      transition: transform 0.3s ease;
     }
 
-    /* Subpages list */
-    .subpages {
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+    .project-link:hover svg {
+      transform: translateX(4px);
     }
 
-    .subpages h4 {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
+    /* Sub-projects Grid */
+    .sub-projects {
+      margin-top: 4rem;
+    }
+
+    .sub-projects-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sub-projects-header h3 {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
       font-weight: 500;
     }
 
-    .subpages ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-    }
-
-    .subpages a {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .subpages a:hover {
-      color: var(--accent-primary);
-    }
-
-    /* Tech Stack */
-    .tech-grid {
+    .sub-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .tech-item {
-      display: flex;
-      align-items: flex-start;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .sub-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
       padding: 1.5rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .tech-item:hover {
-      border-color: var(--accent-secondary);
-      transform: translateX(8px);
+    .sub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-1);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
     }
 
-    .tech-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    .sub-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-5px);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .sub-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .sub-card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-1);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .tech-icon svg {
-      width: 24px;
-      height: 24px;
-      color: var(--bg-primary);
-    }
-
-    .tech-item h4 {
+      margin-bottom: 1rem;
       font-size: 1.1rem;
-      margin-bottom: 0.25rem;
+    }
+
+    .sub-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .sub-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Tech Section */
+    .tech-section {
+      background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-primary) 50%, var(--bg-deep) 100%);
+    }
+
+    .tech-bento {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tech-item {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tech-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(16, 185, 129, 0.03) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .tech-item:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-5px);
+    }
+
+    .tech-item:hover::after {
+      opacity: 1;
+    }
+
+    .tech-item.large {
+      grid-column: span 2;
+    }
+
+    .tech-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .tech-item h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     .tech-item p {
       font-size: 0.9rem;
       color: var(--text-muted);
+      line-height: 1.6;
     }
 
     /* Team Section */
+    .team-section {
+      text-align: center;
+    }
+
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      display: flex;
+      justify-content: center;
       gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .team-card {
-      text-align: center;
-      padding: 3rem 2rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      transition: all 0.3s;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      width: 260px;
+      transition: all 0.4s ease;
+      position: relative;
     }
 
     .team-card:hover {
-      border-color: var(--accent-warm);
-      transform: scale(1.02);
+      border-color: var(--border-glow);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -20px rgba(16, 185, 129, 0.2);
     }
 
     .team-avatar {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, var(--accent-warm), var(--accent-secondary));
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
+      background: var(--gradient-1);
+      margin: 0 auto 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--bg-primary);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--bg-deep);
+      position: relative;
     }
 
-    .team-card h4 {
+    .team-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-1);
+      opacity: 0.3;
+    }
+
+    .team-name {
+      font-family: 'Playfair Display', serif;
       font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
     }
 
-    .team-card p {
+    .team-role {
+      font-size: 0.85rem;
       color: var(--text-muted);
-      font-size: 0.9rem;
     }
 
     /* Footer */
     footer {
-      padding: 4rem 3rem;
-      border-top: 1px solid var(--border);
+      padding: 6rem 4rem 3rem;
       text-align: center;
       position: relative;
-      z-index: 1;
     }
 
-    footer p {
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo .gradient-text {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-desc {
       color: var(--text-muted);
-      font-size: 0.9rem;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+      font-size: 0.95rem;
     }
 
-    footer a {
-      color: var(--accent-primary);
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
       text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
     }
 
-    /* Animations */
-    @keyframes fadeSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .footer-links a:hover {
+      color: var(--accent-1);
+    }
+
+    .copyright {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     /* Responsive */
+    @media (max-width: 1024px) {
+      .projects-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .sub-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tech-bento {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tech-item.large {
+        grid-column: span 1;
+      }
+
+      .hero-float {
+        display: none;
+      }
+    }
+
     @media (max-width: 768px) {
       nav {
         padding: 1rem 1.5rem;
@@ -516,195 +940,371 @@
         display: none;
       }
 
-      .hero, section {
-        padding: 4rem 1.5rem;
+      section {
+        padding: 5rem 1.5rem;
       }
 
       .hero {
-        padding-top: 6rem;
+        padding: 6rem 1.5rem 4rem;
       }
 
-      .projects-grid {
+      .sub-grid {
         grid-template-columns: 1fr;
       }
 
-      .project-number {
-        font-size: 3rem;
+      .tech-bento {
+        grid-template-columns: 1fr;
       }
+
+      .team-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Smooth scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="bg-gradient"></div>
+  <div class="bg-container">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-grid"></div>
+  </div>
 
-  <nav>
-    <div class="logo">TEAM_12</div>
+  <nav id="navbar">
+    <div class="logo">
+      <div class="logo-icon">🦗</div>
+      FoldableRobotics
+    </div>
     <ul class="nav-links">
       <li><a href="#projects">Projects</a></li>
       <li><a href="#tech">Technology</a></li>
       <li><a href="#team">Team</a></li>
     </ul>
+    <a href="project2/report-and-video.html" class="nav-cta">Watch Demo →</a>
   </nav>
 
-  <main>
-    <section class="hero">
-      <span class="hero-tag">RAS 557 • Foldable Robotics</span>
-      <h1>Final Project<br>of <span>Foldable Robots</span></h1>
-      <p class="hero-description">
-        Design, simulate, and experimentally evaluate a bio-inspired foldable robotic leg
-        that is based on a four-bar linkage, mimicking the hind leg of a locust.
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">
-          View Projects
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-        </a>
-        <a href="./project2/report-and-video.html" class="btn btn-secondary">
-          Watch Demo
-        </a>
+  <section class="hero">
+    <div class="hero-float hero-float-1">
+      <div class="float-card">
+        <div class="icon">⚙️</div>
+        <span>MuJoCo Simulation</span>
       </div>
-    </section>
-
-    <section id="projects">
-      <div class="section-header">
-        <span class="section-tag">Portfolio</span>
-        <h2 class="section-title">Course Projects</h2>
+    </div>
+    <div class="hero-float hero-float-2">
+      <div class="float-card">
+        <div class="icon">🔧</div>
+        <span>4-Bar Linkage</span>
       </div>
+    </div>
+    <div class="hero-float hero-float-3">
+      <div class="float-card">
+        <div class="icon">✨</div>
+        <span>Laser-Cut Fabrication</span>
+      </div>
+    </div>
 
-      <div class="projects-grid">
-        <article class="project-card">
-          <span class="project-number">01</span>
-          <h3>Research Proposal</h3>
-          <p>
-            Initial investigation into bio-inspired hopping mechanisms, 
-            literature review, and feasibility analysis for laminated robot design.
-          </p>
-          <div class="project-tags">
-            <span class="tag">Research</span>
-            <span class="tag">Biomimetics</span>
-            <span class="tag">Feasibility</span>
+    <div class="hero-eyebrow">
+      <span class="pulse"></span>
+      RAS 557 — Final Year Project
+    </div>
+
+    <h1>
+      <span class="gradient-text">Grasshopper</span>-Inspired<br>
+      Jumping <span class="italic">Mechanism</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      A biomimetic robot utilizing foldable robotics principles and MuJoCo physics simulation to replicate the explosive locomotion of grasshoppers.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">
+        Explore Projects
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <a href="project2/report-and-video.html" class="btn btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        Watch Demo
+      </a>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="mouse"></div>
+      Scroll to explore
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-header reveal">
+      <div class="section-tag">Our Work</div>
+      <h2 class="section-title">Research & Development</h2>
+      <p class="section-desc">From initial proposal to fully functional prototype — documenting our journey through bio-inspired robotics design.</p>
+    </div>
+
+    <div class="projects-showcase">
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <div class="project-visual-bg">
+            <svg viewBox="0 0 400 240" fill="none">
+              <circle cx="200" cy="120" r="80" stroke="rgba(16,185,129,0.1)" stroke-width="1"/>
+              <circle cx="200" cy="120" r="120" stroke="rgba(16,185,129,0.05)" stroke-width="1"/>
+              <circle cx="200" cy="120" r="160" stroke="rgba(16,185,129,0.03)" stroke-width="1"/>
+            </svg>
           </div>
-          <a href="./project1/" class="project-link">
-            Explore Project
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <span class="project-icon">📋</span>
+          <span class="project-badge">Project 01</span>
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Project Proposal</h3>
+          <p class="project-desc">Initial research phase exploring grasshopper biomechanics, selecting the foldable robotics approach, and defining project scope and objectives.</p>
+          <div class="project-meta">
+            <span class="meta-tag">Research</span>
+            <span class="meta-tag">Biomechanics</span>
+            <span class="meta-tag">Kinematics</span>
+          </div>
+          <a href="project1/" class="project-link">
+            View Proposal
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </a>
-        </article>
+        </div>
+      </div>
 
-        <article class="project-card">
-          <span class="project-number">02</span>
-          <h3>Final Robot</h3>
-          <p>
-            Complete design, simulation, optimization, manufacturing, and 
-            experimental validation of a grasshopper-inspired jumping robot.
-          </p>
-          <div class="project-tags">
-            <span class="tag">MuJoCo</span>
-            <span class="tag">Optimization</span>
-            <span class="tag">Manufacturing</span>
-            <span class="tag">Validation</span>
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <div class="project-visual-bg">
+            <svg viewBox="0 0 400 240" fill="none">
+              <path d="M100 200 L150 100 L250 100 L300 200" stroke="rgba(16,185,129,0.15)" stroke-width="2"/>
+              <circle cx="100" cy="200" r="8" fill="rgba(16,185,129,0.2)"/>
+              <circle cx="150" cy="100" r="8" fill="rgba(16,185,129,0.2)"/>
+              <circle cx="250" cy="100" r="8" fill="rgba(16,185,129,0.2)"/>
+              <circle cx="300" cy="200" r="8" fill="rgba(16,185,129,0.2)"/>
+            </svg>
           </div>
-          <a href="./project2/" class="project-link">
+          <span class="project-icon">🦗</span>
+          <span class="project-badge">Project 02</span>
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">Final Robot</h3>
+          <p class="project-desc">Complete implementation featuring dynamic simulation, design optimization, laser-cut manufacturing, and experimental validation.</p>
+          <div class="project-meta">
+            <span class="meta-tag">MuJoCo</span>
+            <span class="meta-tag">Python</span>
+            <span class="meta-tag">Optimization</span>
+            <span class="meta-tag">Fabrication</span>
+          </div>
+          <a href="project2/" class="project-link">
             Explore Project
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </a>
-          <div class="subpages">
-            <h4>Deep Dives</h4>
-            <ul>
-              <li><a href="./project2/system-model.html">System Model</a></li>
-              <li><a href="./project2/optimization.html">Design Optimization</a></li>
-              <li><a href="./project2/parameter-identification.html">Parameter ID</a></li>
-              <li><a href="./project2/manufacturing.html">Manufacturing</a></li>
-              <li><a href="./project2/experimental-validation.html">Validation</a></li>
-              <li><a href="./project2/report-and-video.html">Report & Video</a></li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="tech">
-      <div class="section-header">
-        <span class="section-tag">Stack</span>
-        <h2 class="section-title">Tools & Technologies</h2>
-      </div>
-
-      <div class="tech-grid">
-        <div class="tech-item">
-          <div class="tech-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6"/><path d="M12 17v6"/><path d="m4.2 4.2 4.3 4.3"/><path d="m15.5 15.5 4.3 4.3"/><path d="M1 12h6"/><path d="M17 12h6"/><path d="m4.2 19.8 4.3-4.3"/><path d="m15.5 8.5 4.3-4.3"/></svg>
-          </div>
-          <div>
-            <h4>MuJoCo</h4>
-            <p>Dynamic simulation & physics modeling</p>
-          </div>
-        </div>
-
-        <div class="tech-item">
-          <div class="tech-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          </div>
-          <div>
-            <h4>Python + Jupyter</h4>
-            <p>Optimization, analysis & visualization</p>
-          </div>
-        </div>
-
-        <div class="tech-item">
-          <div class="tech-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
-          </div>
-          <div>
-            <h4>Laser-Cut Laminates</h4>
-            <p>Precision foldable mechanisms</p>
-          </div>
-        </div>
-
-        <div class="tech-item">
-          <div class="tech-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
-          </div>
-          <div>
-            <h4>ESP32 + Servos</h4>
-            <p>Control systems & gait execution</p>
-          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section id="team">
-      <div class="section-header">
-        <span class="section-tag">Contributors</span>
-        <h2 class="section-title">Team 12</h2>
+    <div class="sub-projects reveal">
+      <div class="sub-projects-header">
+        <h3>Project 2 — Deep Dive</h3>
+      </div>
+      <div class="sub-grid">
+        <a href="project2/system-model.html" class="sub-card">
+          <div class="sub-card-icon">📐</div>
+          <h4>System Model</h4>
+          <p>MuJoCo physics simulation and dynamic analysis</p>
+        </a>
+
+        <a href="project2/optimization.html" class="sub-card">
+          <div class="sub-card-icon">📈</div>
+          <h4>Design Optimization</h4>
+          <p>Parameter tuning and performance optimization</p>
+        </a>
+
+        <a href="project2/parameter-identification.html" class="sub-card">
+          <div class="sub-card-icon">🔍</div>
+          <h4>Parameter Identification</h4>
+          <p>Characterizing system parameters from experiments</p>
+        </a>
+
+        <a href="project2/manufacturing.html" class="sub-card">
+          <div class="sub-card-icon">🛠️</div>
+          <h4>Manufacturing</h4>
+          <p>Laser-cut laminate fabrication workflow</p>
+        </a>
+
+        <a href="project2/experimental-validation.html" class="sub-card">
+          <div class="sub-card-icon">🧪</div>
+          <h4>Experimental Validation</h4>
+          <p>Testing and real-world performance analysis</p>
+        </a>
+
+        <a href="project2/report-and-video.html" class="sub-card">
+          <div class="sub-card-icon">🎬</div>
+          <h4>Report & Video</h4>
+          <p>Final documentation and demonstration</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tech" class="tech-section">
+    <div class="section-header reveal">
+      <div class="section-tag">Technology</div>
+      <h2 class="section-title">Tools & Stack</h2>
+      <p class="section-desc">The hardware and software powering our biomimetic jumping mechanism.</p>
+    </div>
+
+    <div class="tech-bento">
+      <div class="tech-item large reveal">
+        <span class="tech-icon">⚙️</span>
+        <h3>MuJoCo Physics Engine</h3>
+        <p>Multi-body dynamics simulation with accurate contact modeling for realistic jumping behavior prediction.</p>
       </div>
 
-      <div class="team-grid">
-        <div class="team-card">
-          <div class="team-avatar">AS</div>
-          <h4>Abhijit Sinha</h4>
-          <p>Team Member</p>
-        </div>
-
-        <div class="team-card">
-          <div class="team-avatar">SS</div>
-          <h4>Shivakumar Sridhar</h4>
-          <p>Team Member</p>
-        </div>
-
-        <div class="team-card">
-          <div class="team-avatar">AC</div>
-          <h4>Anusha Chatterjee</h4>
-          <p>Team Member</p>
-        </div>
+      <div class="tech-item reveal">
+        <span class="tech-icon">🐍</span>
+        <h3>Python + Jupyter</h3>
+        <p>Scientific computing for analysis and optimization.</p>
       </div>
-    </section>
-  </main>
+
+      <div class="tech-item reveal">
+        <span class="tech-icon">📊</span>
+        <h3>Data Visualization</h3>
+        <p>Plotly, k3d, and PyThreeJS for 3D analysis.</p>
+      </div>
+
+      <div class="tech-item reveal">
+        <span class="tech-icon">✂️</span>
+        <h3>Laser-Cut Laminates</h3>
+        <p>Precision foldable mechanisms from cardstock.</p>
+      </div>
+
+      <div class="tech-item reveal">
+        <span class="tech-icon">📡</span>
+        <h3>ESP32 + Servos</h3>
+        <p>SG90 servo motors with microcontroller control.</p>
+      </div>
+
+      <div class="tech-item large reveal">
+        <span class="tech-icon">🔗</span>
+        <h3>Four-Bar Linkage Mechanism</h3>
+        <p>Biomimetic design replicating grasshopper leg kinematics with store-and-release energy cycles.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="team-section">
+    <div class="section-header reveal">
+      <div class="section-tag">Team 12</div>
+      <h2 class="section-title">Meet the Engineers</h2>
+      <p class="section-desc">The minds behind the mechanism.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">AS</div>
+        <h3 class="team-name">Abhijit Sinha</h3>
+        <p class="team-role">Robotics Engineer</p>
+      </div>
+
+      <div class="team-card reveal">
+        <div class="team-avatar">SS</div>
+        <h3 class="team-name">Shivakumar Sridhar</h3>
+        <p class="team-role">Robotics Engineer</p>
+      </div>
+
+      <div class="team-card reveal">
+        <div class="team-avatar">AC</div>
+        <h3 class="team-name">Anusha Chatterjee</h3>
+        <p class="team-role">Robotics Engineer</p>
+      </div>
+    </div>
+  </section>
 
   <footer>
-    <p>
-      Foldable Robotics • RAS 557 • Arizona State University<br>
-      Built with <a href="https://pages.github.com" target="_blank">GitHub Pages</a>
-    </p>
+    <div class="footer-logo">
+      <span class="gradient-text">Foldable</span>Robotics
+    </div>
+    <p class="footer-desc">A Final Year Project exploring biomimetic design through the lens of foldable robotics principles.</p>
+    <div class="footer-links">
+      <a href="project1/">Proposal</a>
+      <a href="project2/">Final Robot</a>
+      <a href="project2/report-and-video.html">Report</a>
+    </div>
+    <p class="copyright">© 2025 Team 12 — Arizona State University — RAS 557</p>
   </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('active');
+          }, index * 100);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    reveals.forEach(reveal => revealObserver.observe(reveal));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
