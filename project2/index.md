@@ -16,6 +16,6 @@ The structure of this section follows the assignment:
 1. [System Model (MuJoCo)](./system-model/)
 2. [Design Optimization](./optimization/)
    - [Parameter Identification](./parameter-identification.html)
-3. [Manufacturing Plan & Execution](./anushafoldable.pdf)
+3. [Manufacturing Plan & Execution](./manufacturing.pdf)
 4. [Experimental Validation](./experimental-validation/)
 5. [Report & Video](./report-and-video/)
