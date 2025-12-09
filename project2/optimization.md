@@ -2,7 +2,7 @@
 layout: default
 title: "Design Optimization"
 parent: "Project 2 – Final Robot"
-nav_order: 2
+nav_order: 3
 has_children: true
 ---
 
