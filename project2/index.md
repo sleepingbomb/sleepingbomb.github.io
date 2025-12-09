@@ -17,5 +17,5 @@ The structure of this section follows the assignment:
 2. [Manufacturing Plan & Execution](./manufacturing.pdf)
 3. [Design Optimization](./optimization/)
    - [Parameter Identification](./parameter-identification.html)
-   -[Experimental Validation](./experimental-validation/)
+   - [Experimental Validation](./experimental-validation/)
 4. [Presentation & Video](./report-and-video/)
