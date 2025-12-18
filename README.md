@@ -9,4 +9,4 @@ It includes:
 - Supporting code, MuJoCo models, and documentation.
 
 To view the website, visit:  
-`https://your-github-username.github.io/your-repo-name/`
+`https://sleepingbomb.github.io/`
